@@ -2,6 +2,7 @@ package com.example.punchpower
 
 import android.content.Context
 import android.content.Intent
+import android.content.pm.ActivityInfo
 import android.hardware.Sensor
 import android.hardware.SensorEvent
 import android.hardware.SensorEventListener
@@ -9,10 +10,16 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
-import android.widget.TextView
+import com.example.punchpower.databinding.ActivityMainBinding
 import java.lang.Exception
 
+
 class MainActivity : AppCompatActivity() {
+    // 전역 변수로 바인딩 객체 선언
+    private var mBinding: ActivityMainBinding? = null
+    // 매번 null 체크를 할 필요 없이 편의성을 위해 바인딩 변수 재 선언
+    private val binding get() = mBinding!!
+
     // 측정된 최대 펀치력
     var maxPower = 0.0
     // 펀치력 측정이 시작되었는지 나타내는 변수
@@ -20,11 +27,9 @@ class MainActivity : AppCompatActivity() {
     // 펀치력 측정이 시작된 시간
     var startTime = 0L
 
-    val stateLabel: TextView = findViewById(R.id.stateLabel)
-
     // Sensor 관리자 객체. lazy 로 실제 사용될 때 초기화
     val sensorManager: SensorManager by lazy {
-        getSystemService(Context.SENSOR_SERVICE) as SensorManager
+        getSystemService(SENSOR_SERVICE) as SensorManager
     }
 
     // 센서 이벤트를 처리하는 리스너
@@ -57,7 +62,7 @@ class MainActivity : AppCompatActivity() {
                     if(maxPower < power) maxPower = power
 
                     // 측정 중인 것을 사용자에게 알려줌
-                    stateLabel.text = "펀치력을 측정하고 있습니다"
+                    binding.stateLabel.text = "펀치력을 측정하고 있습니다"
 
                     // 최초 측정 후 3초가 지났으면 측정을 끝낸다.
                     if(System.currentTimeMillis() - startTime > 3000) {
@@ -72,7 +77,15 @@ class MainActivity : AppCompatActivity() {
     // 화면이 최초 생성될 때 호출되는 함수
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        setContentView(R.layout.activity_main)
+        // 화면 세로 고정
+        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
+
+        // 자동 생성된 뷰 바인딩 클래스에서의 inflate라는 메서드를 활용해서
+        // 액티비티에서 사용할 바인딩 클래스의 인스턴스 생성
+        mBinding = ActivityMainBinding.inflate(layoutInflater)
+        // getRoot 메서드로 레이아웃 내부의 최상위 위치 뷰의
+        // 인스턴스를 활용하여 생성된 뷰를 액티비티에 표시
+        setContentView(binding.root)
     }
 
     // Activity 사라졌다 다시 보일 때마다 호출되는 함수
@@ -86,7 +99,7 @@ class MainActivity : AppCompatActivity() {
         maxPower = 0.0
         isStart = false
         startTime = 0L
-        stateLabel.text = "핸드폰을 손에 쥐고 주먹을 내지르세요"
+        binding.stateLabel.text = "핸드폰을 손에 쥐고 주먹을 내지르세요"
 
         // 센서의 변화 값을 처리할 리스너를 등록
         // TYPE_LINEAR_ACCELERATION은 중력값을 제외하고 x, y, z축에 측정된 가속도만 계산
@@ -111,7 +124,11 @@ class MainActivity : AppCompatActivity() {
         }catch (e:Exception) {e.printStackTrace()}
     }
 
-
+    override fun onDestroy() {
+        // onDestroy 에서 binding class 인스턴스 참조를 정리해주어야 함
+        mBinding = null
+        super.onDestroy()
+    }
 
 
 }
