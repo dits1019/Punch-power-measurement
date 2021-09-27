@@ -6,4 +6,59 @@
     android:layout_height="match_parent"
     tools:context=".ResultActivity">
 
+    <TextView
+        android:id="@+id/scoreLabel"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="999 점"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent"
+        android:textSize="48sp" />
+
+    <TextView
+        android:id="@+id/textView3"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
+        android:text="당신의 펀치력은"
+        android:layout_marginBottom="32dp"
+        app:layout_constraintBottom_toTopOf="@id/scoreLabel"
+        android:layout_marginTop="8dp"
+        app:layout_constraintTop_toTopOf="parent"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        app:layout_constraintVertical_bias="1.0"
+        android:textSize="24sp" />
+
+    <Button
+        android:id="@+id/rankingBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="랭킹보기"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toBottomOf="parent" />
+
+    <Button
+        android:id="@+id/restartBtn"
+        android:layout_width="0dp"
+        android:layout_height="wrap_content"
+        android:text="다시하기"
+        android:layout_marginBottom="8dp"
+        app:layout_constraintBottom_toTopOf="@id/rankingBtn"
+        app:layout_constraintEnd_toEndOf="parent"
+        android:layout_marginEnd="8dp"
+        app:layout_constraintStart_toStartOf="parent"
+        android:layout_marginStart="8dp" />
+
 </androidx.constraintlayout.widget.ConstraintLayout>
