@@ -19,8 +19,6 @@ class ResultActivity : AppCompatActivity() {
     }
 
     override fun onCreate(savedInstanceState: Bundle?) {
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
-        
         super.onCreate(savedInstanceState)
         mBinding = ActivityResultBinding.inflate(layoutInflater)
         setContentView(binding.root)

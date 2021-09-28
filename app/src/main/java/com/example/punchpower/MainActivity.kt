@@ -10,6 +10,8 @@ import android.hardware.SensorManager
 import androidx.appcompat.app.AppCompatActivity
 import android.os.Bundle
 import android.util.Log
+import android.view.animation.Animation
+import android.view.animation.AnimationUtils
 import com.example.punchpower.databinding.ActivityMainBinding
 import java.lang.Exception
 
@@ -58,6 +60,9 @@ class MainActivity : AppCompatActivity() {
 
                 // 측정이 시작된 경우
                 if(isStart) {
+                    // 애니메이션 제거
+                    binding.imageView.clearAnimation()
+
                     // 5초간 최대값을 측정. 현재측정된 값이 지금까지 측정된 최대 값보다 크면 최대값을 현재 값으로 변경.
                     if(maxPower < power) maxPower = power
 
@@ -77,8 +82,6 @@ class MainActivity : AppCompatActivity() {
     // 화면이 최초 생성될 때 호출되는 함수
     override fun onCreate(savedInstanceState: Bundle?) {
         super.onCreate(savedInstanceState)
-        // 화면 세로 고정
-        setRequestedOrientation(ActivityInfo.SCREEN_ORIENTATION_UNSPECIFIED)
 
         // 자동 생성된 뷰 바인딩 클래스에서의 inflate라는 메서드를 활용해서
         // 액티비티에서 사용할 바인딩 클래스의 인스턴스 생성
@@ -105,6 +108,26 @@ class MainActivity : AppCompatActivity() {
         // TYPE_LINEAR_ACCELERATION은 중력값을 제외하고 x, y, z축에 측정된 가속도만 계산
         sensorManager.registerListener(eventListener, sensorManager.getDefaultSensor(Sensor.TYPE_LINEAR_ACCELERATION),
             SensorManager.SENSOR_DELAY_NORMAL)
+
+        // 애니메이션 시작
+        val animation = AnimationUtils.loadAnimation(this@MainActivity, R.anim.tran)
+        binding.imageView.startAnimation(animation)
+
+        // 애니메이션 리스너 설정
+        animation.setAnimationListener(object: Animation.AnimationListener {
+            override fun onAnimationRepeat(p0: Animation?) {
+                // 애니메이션이 반복될 때의 처리 코드를 작성
+            }
+
+            override fun onAnimationEnd(p0: Animation?) {
+                // 애니메이션이 종료될 때의 코드를 작성
+            }
+
+            override fun onAnimationStart(p0: Animation?) {
+                // 애니메이션이 시작될 때의 코드를 작성
+            }
+
+        })
 
     }
 
